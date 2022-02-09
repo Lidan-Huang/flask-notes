@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ user.username }}</h1>
+<p>{{ user.first_name }} {{ user.last_name }}</p>
+<p>{{ user.email }}</p>
+
+<h2>Notes</h2>
+    <form id="note-form">
+        {{ noteCSRF.hidden_tag() }}
+        <ul>
+            {% for note in user.notes %}
+            <li maxlength="100">
+                <p><b>{{ note.title }}</b>: {{ note.content }}</p>
+                    <button class="btn btn-dark" formaction="/notes/{{ note.id }}/update">Update Note</button>
+                    <!-- <form action="/notes/{{ note.id }}/delete" method="POST"> -->
+                        <button class="btn btn-dark" formaction="/notes/{{ note.id }}/delete" formmethod="POST">Delete Note</button>
+                    <!-- </form> -->
+            </li>
+            <br>
+            {% endfor %}
+        </ul>
+        <button class= "btn btn-primary" id="add-note" formaction="/users/{{user.username}}/notes/add">Add Note</button>
+    </form>
+    <br>
+    <br>
+    <br>
+
+<form id="user-action-form" method="POST">
+    {{ form.hidden_tag() }}
+    <button
+        formaction="/logout"
+        class="btn btn-primary"
+        id="logout"
+        type="submit">Logout</button>
+
+    <button
+        formaction="/users/{{ user.username }}/delete"
+        class="btn btn-dangerous"
+        id="delete-user"
+        type="submit">Delete User</button>
+
+</form>
+{% endblock %}
